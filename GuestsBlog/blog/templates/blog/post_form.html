@@ -1,0 +1,24 @@
+{% extends 'blog/base.html' %} {% block content %}
+<h1>Створити новий пост</h1>
+<form method="post" class="post-form">
+  {% csrf_token %}
+  <div class="form-group">
+    <label>Заголовок:</label>
+    <input type="text" name="title" class="form__input" required />
+  </div>
+  <div class="form-group">
+    <label>Автор:</label>
+    <input type="text" name="author_name" class="form__input" />
+  </div>
+  <div class="form-group">
+    <label>Контент:</label>
+    <textarea
+      name="content"
+      class="form__textarea"
+      rows="10"
+      required
+    ></textarea>
+  </div>
+  <button type="submit" class="btn btn--primary">Опублікувати</button>
+</form>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% load static %}
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <title>{% block title %}My Blog{% endblock %}</title>
+  </head>
+  <body>
+    <nav class="nav">
+      <div class="nav__group">
+        <a
+          href="{% url 'post_list' %}"
+          class="nav__link"
+          style="font-weight: 800; font-size: 1.2rem; color: var(--primary)"
+          >BLOG.io</a
+        >
+        <a href="{% url 'post_list' %}" class="nav__link">Головна</a>
+        <a href="{% url 'post_create' %}" class="nav__link">Додати пост</a>
+      </div>
+
+      <form action="{% url 'post_list' %}" method="get" class="nav__search">
+        <input
+          type="text"
+          name="search"
+          placeholder="Пошук за назвою..."
+          value="{{ query|default:'' }}"
+        />
+        <button type="submit">Знайти</button>
+      </form>
+    </nav>
+
+    <main class="container">{% block content %}{% endblock %}</main>
+  </body>
+</html>
