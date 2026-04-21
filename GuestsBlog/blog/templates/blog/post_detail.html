@@ -1,0 +1,61 @@
+{% extends 'blog/base.html' %} {% block title %}{{ post.title }} - Guest
+Blog{%endblock %} {% block content %}
+<article class="post">
+  <h1 class="post__title">{{ post.title }}</h1>
+  <p class="post__author">By {{ post.author_name }}</p>
+  <p class="post__date">{{ post.created_at|date:'M d, Y' }}</p>
+  <div class="post__content">{{ post.content|linebreaks }}</div>
+</article>
+
+<section class="comments">
+  <h2 class="comments__title">Comments</h2>
+  <div class="comments__list">
+    {% for comment in post.comments.all %}
+    <div class="comment">
+      <p class="comment__author">{{ comment.author_name }}</p>
+      <p class="comment__date">{{ comment.created_at|date:'M d, Y' }}</p>
+      <p class="comment__content">{{ comment.content }}</p>
+    </div>
+    {% empty %}
+    <p class="comments__empty">No comments yet.</p>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="add-comment">
+  <h2 class="add-comment__title">Add a Comment</h2>
+  <form
+    action="{% url 'add_comment' post.pk %}"
+    method="post"
+    class="comment-form"
+  >
+    {% csrf_token %}
+
+    <div class="form-group">
+      <label for="id_author_name">Ім'я:</label>
+      <input
+        type="text"
+        name="author_name"
+        class="form__input"
+        id="id_author_name"
+        placeholder="Ваше ім'я"
+        required
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="id_content">Коментар:</label>
+      <textarea
+        name="content"
+        class="form__textarea"
+        id="id_content"
+        rows="3"
+        placeholder="Напишіть щось..."
+        required
+      ></textarea>
+    </div>
+
+    <button type="submit" class="btn btn--primary">Submit Comment</button>
+  </form>
+</section>
+{% endblock %}
