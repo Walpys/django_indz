@@ -15,7 +15,7 @@ def get_post_list(request):
             comments_count=Count('comments')
         ).all().order_by('-created_at')
 
-    paginator = Paginator(posts_list, 5)
+    paginator = Paginator(posts_list, 20)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
@@ -25,7 +25,7 @@ def get_post_list(request):
     })
 
 def get_post_detail(request, post_id):
-    post = get_object_or_404(Post, id=post_id)
+    post = get_object_or_404(Post, pk=post_id)
     return render(request, 'blog/post_detail.html', {'post': post})
 
 def post_create(request):
@@ -40,12 +40,18 @@ def post_create(request):
     return render(request, 'blog/post_form.html')
 
 def add_comment(request, post_id):
-    post = get_object_or_404(Post, id=post_id)
+    post = get_object_or_404(Post, pk=post_id)
     
     if request.method == "POST":
-        text = request.POST.get('text')
+        text = request.POST.get('content')
+        author = request.POST.get('author_name')
+        
         if text:
-            Comment.objects.create(post=post, text=text)
-            return redirect('post_detail', post_id=post.id)
+            Comment.objects.create(
+                post_id=post, 
+                content=text, 
+                author_name=author or 'Гість'
+            )
+            return redirect('post_detail', post_id=post.pk)
     
-    return render(request, 'blog/add_comment.html', {'post': post})
+    return redirect('post_detail', post_id=post.pk)

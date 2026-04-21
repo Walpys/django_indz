@@ -1,0 +1,52 @@
+{% extends 'blog/base.html' %} {% block content %}
+<h1 class="page-title">Публікації</h1>
+<div class="blog-list">
+  {% for post in page_obj %}
+  <article class="post-card">
+    <h2 class="post-card__title">
+      <a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a>
+    </h2>
+    <div class="post-card__meta">
+      <span>{{ post.created_at|date:"d.m.Y" }}</span>
+      <span>💬 {{ post.comments_count }}</span>
+    </div>
+    <p class="post-card__excerpt">{{ post.content|truncatewords:20 }}</p>
+    <a
+      href="{% url 'post_detail' post.pk %}"
+      class="nav__link"
+      style="font-size: 0.85rem; font-weight: 700"
+      >Читати далі &rarr;</a
+    >
+  </article>
+  {% empty %}
+  <p>Постів поки немає.</p>
+  {% endfor %}
+</div>
+
+<div class="pagination">
+  {% if page_obj.has_previous %}
+  <a href="?page=1{% if query %}&search={{ query }}{% endif %}"
+    >&laquo; перша</a
+  >
+  <a
+    href="?page={{ page_obj.previous_page_number }}{% if query %}&search={{ query }}{% endif %}"
+    >&lt</a
+  >
+  {% endif %}
+
+  <span class="current"
+    >Сторінка {{ page_obj.number }} з {{ page_obj.paginator.num_pages }}</span
+  >
+
+  {% if page_obj.has_next %}
+  <a
+    href="?page={{ page_obj.next_page_number }}{% if query %}&search={{ query }}{% endif %}"
+    >&gt</a
+  >
+  <a
+    href="?page={{ page_obj.paginator.num_pages }}{% if query %}&search={{ query }}{% endif %}"
+    >остання &raquo;</a
+  >
+  {% endif %}
+</div>
+{% endblock %}
