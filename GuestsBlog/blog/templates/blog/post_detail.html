@@ -8,7 +8,7 @@ Blog{%endblock %} {% block content %}
 </article>
 
 <section class="comments">
-  <h2 class="comments__title">Comments</h2>
+  <h2 class="comments__title">Коментарі</h2>
   <div class="comments__list">
     {% for comment in post.comments.all %}
     <div class="comment">
@@ -17,13 +17,13 @@ Blog{%endblock %} {% block content %}
       <p class="comment__content">{{ comment.content }}</p>
     </div>
     {% empty %}
-    <p class="comments__empty">No comments yet.</p>
+    <p class="comments__empty">Поки немає коментарів.</p>
     {% endfor %}
   </div>
 </section>
 
 <section class="add-comment">
-  <h2 class="add-comment__title">Add a Comment</h2>
+  <h2 class="add-comment__title">Додати коментар</h2>
   <form
     action="{% url 'add_comment' post.pk %}"
     method="post"
@@ -55,7 +55,7 @@ Blog{%endblock %} {% block content %}
       ></textarea>
     </div>
 
-    <button type="submit" class="btn btn--primary">Submit Comment</button>
+    <button type="submit" class="btn btn--primary">Залишити коментар</button>
   </form>
 </section>
 {% endblock %}
